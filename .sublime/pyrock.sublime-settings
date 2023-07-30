@@ -1,0 +1,7 @@
+{
+    "paths_to_scan": [],
+    "python_venv_path": "",
+    "python_interpreter_path": "",
+    "log_level": "info",
+    "import_scan_depth": 4
+}

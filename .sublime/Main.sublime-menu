@@ -1,0 +1,43 @@
+[
+  {
+    "caption": "Preferences",
+    "mnemonic": "n",
+    "id": "preferences",
+    "children": [
+      {
+        "caption": "Package Settings",
+        "mnemonic": "P",
+        "id": "package-settings",
+        "children": [
+          {
+            "caption": "Py Rock",
+            "children": [
+              {
+                "caption": "Settings",
+                "command": "py_rock_edit_settings",
+                "args": {
+                  "base_file": "${packages}/Py Rock/.sublime/pyrock.sublime-settings",
+                  "default": "// Settings in here override those in \"${packages}/User/pyrock.sublime-settings\",\n\n{\n\t$0\n}\n"
+                }
+              },
+              {
+                "caption": "Settings - Default",
+                "command": "py_rock_open_file",
+                "args": {
+                  "file": "${packages}/Py Rock/.sublime/pyrock.sublime-settings"
+                }
+              },
+              {
+                "caption": "Settings - User",
+                "command": "py_rock_open_file",
+                "args": {
+                  "file": "${packages}/User/pyrock.sublime-settings"
+                }
+              },
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

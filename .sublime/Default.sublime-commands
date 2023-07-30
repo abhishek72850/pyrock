@@ -1,0 +1,12 @@
+[
+  {
+    "caption": "Py Rock: Import Symbol",
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  },
+  {
+    "caption": "Py Rock: Re-Index Imports",
+    "command": "py_rock",
+    "args": { "action": "re_index_imports" }
+  }
+]
