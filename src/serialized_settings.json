@@ -1,0 +1,5 @@
+{
+    "IMPORT_SCAN_DEPTH": 4,
+    "INDEX_CACHE_DIRECTORY": "~",
+    "IMPORT_INDEX_FILE_NAME": "py_rock_imports.json"
+}
