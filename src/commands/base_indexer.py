@@ -1,23 +1,23 @@
 import os
 import sublime
 from sublime import Window
-from src.settings import PyRockSettings
-from src.constants import PyRockConstants
-from src.logger import get_logger
+from ..settings import PyRockSettings
+from ..constants import PyRockConstants
+from ..logger import Logger
 from pathlib import Path
 import subprocess
 import json
 import time
 
 
-logger = get_logger(__name__)
+logger = Logger(__name__)
 path = Path(__file__)
 
 
 class BaseIndexer:
     def _generate_serialized_settings(self):
         settings = {
-            "IMPORT_SCAN_DEPTH": PyRockSettings.IMPORT_SCAN_DEPTH.value,
+            "IMPORT_SCAN_DEPTH": PyRockSettings().IMPORT_SCAN_DEPTH.value,
             "INDEX_CACHE_DIRECTORY": PyRockConstants.INDEX_CACHE_DIRECTORY,
             "IMPORT_INDEX_FILE_NAME": PyRockConstants.IMPORT_INDEX_FILE_NAME
         }
@@ -56,9 +56,10 @@ class BaseIndexer:
             if "99" in str(line) or progress == "":
                 break
     
-    def _run_indexer(self, window: Window):
-        if not self._is_indexing_needed():
+    def _run_indexer(self, window: Window, force=False):
+        if self._is_indexing_needed() and not force:
             logger.debug("Indexing not needed")
+            window.status_message("Indexing not needed")
             return
 
         self._generate_serialized_settings()
@@ -69,22 +70,22 @@ class BaseIndexer:
 
         unix_env_bash = """
             set -e
-            source {venv_path}
-            python -u {indexer_script_path}
+            source "{venv_path}"
+            python -u "{indexer_script_path}"
             deactivate
         """
         unix_without_env_bash = """
             set -e
-            python -u {indexer_script_path}
+            python -u "{indexer_script_path}"
         """
 
         windows_env_bash = """
-            {venv_path}
-            python -u {indexer_script_path}
+            "{venv_path}"
+            python -u "{indexer_script_path}"
             deactivate
         """
         windows_without_env_bash = """
-            python -u {indexer_script_path}
+            python -u "{indexer_script_path}"
             deactivate
         """
 
@@ -92,9 +93,9 @@ class BaseIndexer:
             PyRockConstants.PLATFORM_LINUX,
             PyRockConstants.PLATFORM_OSX
         ]:
-            if PyRockSettings.PYTHON_VIRTUAL_ENV_PATH.value:
+            if PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value:
                 import_command = unix_env_bash.format(
-                    venv_path=PyRockSettings.PYTHON_VIRTUAL_ENV_PATH.value,
+                    venv_path=PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value,
                     indexer_script_path=self._get_indexer_script_path()
                 )
             else:
@@ -102,9 +103,9 @@ class BaseIndexer:
                     indexer_script_path=self._get_indexer_script_path()
                 )
         else:
-            if PyRockSettings.PYTHON_VIRTUAL_ENV_PATH.value:
+            if PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value:
                 import_command = windows_env_bash.format(
-                    venv_path=PyRockSettings.PYTHON_VIRTUAL_ENV_PATH.value,
+                    venv_path=PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value,
                     indexer_script_path=self._get_indexer_script_path()
                 )
             else:
@@ -112,6 +113,7 @@ class BaseIndexer:
                     indexer_script_path=self._get_indexer_script_path()
                 )
         
+        logger.debug(f"Import shell command using: {import_command}")
         self._run_import_indexer(window, import_command)
 
         window.status_message("Finished imports...")

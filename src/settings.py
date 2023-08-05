@@ -1,9 +1,9 @@
 import os
-from typing import Dict, Any
+from typing import Any
 import sublime
 from sublime import Settings
-from src.constants import PyRockConstants
-from src.exceptions import InvalidImportDepthScan, InvalidPythonVirtualEnvPath, InvalidLogLevel
+from .constants import PyRockConstants
+from .exceptions import InvalidImportDepthScan, InvalidPythonVirtualEnvPath, InvalidLogLevel
 
 
 class PyRockSettingsFieldBase:
@@ -73,28 +73,44 @@ class SettingsPythonInterpreterPathField(PyRockSettingsFieldBase):
 
 class SettingsPythonLogLevel(PyRockSettingsFieldBase):
     def _validate(self):
-        log_level: str = self._field_value
+        import logging
+        self._field_value = self._field_value.upper()
 
-        if log_level not in ["INFO", "DEBUG", "ERROR"]:
+        log_level_map = {
+            "CRITICAL": logging.CRITICAL,
+            "ERROR": logging.ERROR,
+            "WARNING": logging.WARNING,
+            "INFO": logging.INFO,
+            "DEBUG": logging.DEBUG,
+            "NOTSET": logging.NOTSET,
+        }
+
+        if log_level_map.get(self._field_value) is None:
             raise InvalidLogLevel
 
+
 class PyRockSettings:
-    settings = sublime.load_settings(PyRockConstants.PACKAGE_SETTING_NAME)
+    def __init__(self):
+        PyRockSettings.parse()
 
-    IMPORT_SCAN_DEPTH = SettingsImportScanDepthField(
-        "import_scan_depth",
-        settings,
-        default_value=PyRockConstants.DEFAULT_IMPORT_SCAN_DEPTH,
-    )
+    @classmethod
+    def parse(cls):
+        settings = sublime.load_settings(PyRockConstants.PACKAGE_SETTING_NAME)
 
-    PYTHON_VIRTUAL_ENV_PATH = SettingsPythonVirtualEnvPathField(
-        "python_venv_path",
-        settings,
-    )
+        cls.IMPORT_SCAN_DEPTH = SettingsImportScanDepthField(
+            "import_scan_depth",
+            settings,
+            default_value=PyRockConstants.DEFAULT_IMPORT_SCAN_DEPTH,
+        )
 
-    PYTHON_INTERPRETER_PATH = SettingsPythonInterpreterPathField(
-        "python_interpreter_path",
-        settings,
-    )
+        cls.PYTHON_VIRTUAL_ENV_PATH = SettingsPythonVirtualEnvPathField(
+            "python_venv_path",
+            settings,
+        )
 
-    LOG_LEVEL = SettingsPythonLogLevel("log_level", settings, default_value="INFO")
+        cls.PYTHON_INTERPRETER_PATH = SettingsPythonInterpreterPathField(
+            "python_interpreter_path",
+            settings,
+        )
+
+        cls.LOG_LEVEL = SettingsPythonLogLevel("log_level", settings, default_value="INFO")

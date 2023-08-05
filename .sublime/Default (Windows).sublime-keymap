@@ -1,0 +1,12 @@
+[
+  {
+    "keys": ["ctrl+q"],
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  },
+  {
+    "keys": ["ctrl+shift+q"],
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  }
+]
