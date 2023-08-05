@@ -1,23 +1,24 @@
 import os
-import sys
 from typing import List, Dict, Optional
 import sublime
-from sublime import SymbolLocation, SymbolRegion, Region, Edit
-import sublime_plugin
+from sublime import SymbolLocation, Region
 from sublime import SymbolSource, SymbolType, KindId, FindFlags
 import re
 import json
-from src.logger import get_logger
+from ..logger import Logger
 from pathlib import Path
-from src.constants import PyRockConstants
-from src.settings import PyRockSettings
+from ..constants import PyRockConstants
 
 
-logger = get_logger(__name__)
+logger = Logger(__name__)
 path = Path(__file__)
 
 
-class ImportSymbolCommand(sublime_plugin.TextCommand):
+class ImportSymbolCommand:
+    def __init__(self, window, edit, view):
+        self.window = window
+        self.sublime_edit = edit
+        self.view = view
 
     def _update_existing_import_statement_region(
         self,
@@ -162,7 +163,6 @@ class ImportSymbolCommand(sublime_plugin.TextCommand):
                 path_split = import_path.split('.')
                 if path_split[-1] == selected_text:
                     if len(path_split) > 1:
-                        print(path_split)
                         import_statements[f"from {'.'.join(path_split[:-1])} import {selected_text}"] = {
                             "from_part": f"from {'.'.join(path_split[:-1])} import",
                             "symbol": selected_text,
@@ -174,15 +174,20 @@ class ImportSymbolCommand(sublime_plugin.TextCommand):
                         }
         return import_statements
 
-    def run(self, edit: Edit):
-        user_python_import_map: Optional[Dict[str, Dict]] = self.load_user_python_imports()
-
+    def run(self):
         selected_view = self.view.sel()[0]
         selected_text: Optional[str] = self.view.substr(selected_view)
 
-        self.sublime_edit = edit
-
         logger.debug(f"Selected text {selected_text}")
+
+        if len(selected_text) < 2:
+            logger.info("Select at least 2 characters")
+            sublime.status_message(
+                "Select at least 2 characters"
+            )
+            return
+
+        user_python_import_map: Optional[Dict[str, Dict]] = self.load_user_python_imports()
 
         symbol_locations: List[SymbolLocation] = self.view.window().symbol_locations(
             sym=selected_text,
@@ -208,6 +213,10 @@ class ImportSymbolCommand(sublime_plugin.TextCommand):
                     user_python_import_map
                 )
             )
+
+        self.import_statements = dict(
+            sorted(self.import_statements.items(), key=lambda k: k[0])
+        )
 
         self.view.erase_status(PyRockConstants.PACKAGE_NAME)
         self.view.set_status(

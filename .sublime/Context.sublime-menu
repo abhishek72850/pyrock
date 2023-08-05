@@ -5,6 +5,7 @@
     "children":
     [
       { "command": "py_rock", "args": {"action": "import_symbol"}, "caption": "Import Symbol" },
+      { "command": "py_rock", "args": {"action": "re_index_imports"}, "caption": "Re-Index Imports" },
     ]
   }
 ]
