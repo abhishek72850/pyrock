@@ -29,6 +29,26 @@ Installation
 - OR
 - Download the `.sublime-package` from git repo and put it in your sublime packages folder
 
+Settings
+--------
+```
+{
+    "paths_to_scan": [], // Not used as of now
+    "python_venv_path": "",
+    "python_interpreter_path": "", // Not used as of now
+    "log_level": "info",
+    "import_scan_depth": 4
+}
+```
+- `paths_to_scan`: This is still in development, it will have no effect as of now.
+- `python_interpreter_path`: This is still in development, it will have no effect as of now.
+- `python_venv_path` : Specifies which python env to use when indexing files, if not given it will choose the default python interpreter of your system (Make sure you have set any default python, otherwise it will not be able to index). It takes the full path to `activate` file of the virtual environment, for example:
+  ```
+  "python_venv_path": "~/home/venv/bin/activate"
+  ```
+- `log_level`: By default set to `info`, accepted values `info`, `debug`, `error`, `warning`
+- `import_scan_depth`: This defines how deep it will scan any python package, the higher the number the more deep it will go, `4` is an optimal depth, you can increase it but it will also increase the time to index all files, so change it carefully.
+
 Usage
 -----
 - Upon installation it automatically reads the settings and scans your python environment for packages and index them.
