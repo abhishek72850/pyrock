@@ -25,9 +25,9 @@ Upcoming Features
 
 Installation
 ------------
-- From sublime package control install package enter name `pyrock`
+- From sublime package control install package enter name `PyRock`
 - OR
-- Download the `.sublime-package` from git repo and put it in your sublime packages folder
+- Clone this git repo and put it in your sublime packages folder
 
 Settings
 --------
