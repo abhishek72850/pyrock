@@ -67,9 +67,6 @@ Compatibility
 - Require Sublime Text version > 3
 - Works for `Python Imports` only
 
-Open Source
------------
-- If this projects gains popularity, i will open source the whole code 😉
 
 [build-shield]: https://img.shields.io/travis/abhishek72850/pyrock.svg?style=for-the-badge
 [build-url]: https://travis-ci.org/abhishek72850/pyrock
