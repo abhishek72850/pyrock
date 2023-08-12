@@ -1,11 +1,10 @@
 PyRock
 ================
-[![Build][build-shield]][build-url]
 [![Code Coverage][code-coverage-shield]][code-coverage-url]
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
+[![Release][release-shield]][release-url]
 
 -----------------------------
 
@@ -72,15 +71,13 @@ Compatibility
 - Works for `Python Imports` only
 
 
-[build-shield]: https://img.shields.io/travis/abhishek72850/pyrock.svg?style=for-the-badge
-[build-url]: https://travis-ci.org/abhishek72850/pyrock
 [code-coverage-shield]: https://img.shields.io/codecov/c/github/abhishek72850/pyrock/master?style=for-the-badge
 [code-coverage-url]: https://codecov.io/gh/abhishek72850/pyrock
 [contributors-shield]: https://img.shields.io/github/contributors/abhishek72850/pyrock.svg?style=for-the-badge
 [contributors-url]: https://github.com/abhishek72850/pyrock/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/abhishek72850/pyrock.svg?style=for-the-badge
-[forks-url]: https://github.com/abhishek72850/pyrock/network/members
 [stars-shield]: https://img.shields.io/github/stars/abhishek72850/pyrock.svg?style=for-the-badge
 [stars-url]: https://github.com/abhishek72850/pyrock/stargazers
 [issues-shield]: https://img.shields.io/github/issues/abhishek72850/pyrock.svg?style=for-the-badge
 [issues-url]: https://github.com/abhishek72850/pyrock/issues
+[release-shield]: https://img.shields.io/github/v/release/abhishek72850/pyrock.svg?style=for-the-badge
+[release-url]: https://img.shields.io/github/v/release/abhishek72850/pyrock
