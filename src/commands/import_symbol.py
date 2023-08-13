@@ -90,6 +90,10 @@ class ImportSymbolCommand:
             self.view.insert(self.sublime_edit, 0, selected_import_option)
     
     def _add_import_to_view(self, index: int):
+        if index < 0:
+            logger.debug("Not selected any item, returning")
+            return
+
         logger.debug(f"Select {index} from popup menu")
         import_option_list: List[str] = list(self.import_statements.keys())
         selected_option = self.import_statements[import_option_list[index]]["from_part"]
