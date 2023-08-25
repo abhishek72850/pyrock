@@ -1,11 +1,11 @@
 [
   {
-    "keys": ["cmd+q"],
+    "keys": ["super+shift+;"],
     "command": "py_rock",
     "args": { "action": "import_symbol" }
   },
   {
-    "keys": ["ctrl+shift+q"],
+    "keys": ["ctrl+shift+;"],
     "command": "py_rock",
     "args": { "action": "import_symbol" }
   }
