@@ -1,12 +1,8 @@
 [
   {
-    "caption": "Preferences",
-    "mnemonic": "n",
     "id": "preferences",
     "children": [
       {
-        "caption": "Package Settings",
-        "mnemonic": "P",
         "id": "package-settings",
         "children": [
           {
@@ -14,24 +10,20 @@
             "children": [
               {
                 "caption": "Settings",
-                "command": "py_rock_edit_settings",
+                "command": "edit_settings",
                 "args": {
                   "base_file": "${packages}/pyrock/.sublime/pyrock.sublime-settings",
+                  "user_file": "${packages}/User/pyrock.sublime-settings",
                   "default": "// Settings in here override those in \"${packages}/User/pyrock.sublime-settings\",\n\n{\n\t$0\n}\n"
                 }
               },
               {
-                "caption": "Settings - Default",
-                "command": "py_rock_open_file",
+                "caption": "Key Bindings",
+                "command": "edit_settings",
                 "args": {
-                  "file": "${packages}/pyrock/.sublime/pyrock.sublime-settings"
-                }
-              },
-              {
-                "caption": "Settings - User",
-                "command": "py_rock_open_file",
-                "args": {
-                  "file": "${packages}/User/pyrock.sublime-settings"
+                  "base_file": "${packages}/pyrock/.sublime/Default (${platform}).sublime-keymap",
+                  "user_file": "${packages}/User/Default (${platform}).sublime-keymap",
+                  "default": ""
                 }
               },
             ]

@@ -41,7 +41,7 @@ class AdminManager:
         response: Optional[Dict] = Network.get('https://abhishek72850.github.io/pyrock_blacklist.json')
 
         if response is not None:
-            logger.info("Successfully fetched blacklist")
+            logger.debug("Successfully fetched blacklist")
             self.black_list: Dict = response
             self.black_list_ready = True
             delay = 60 * 60 * 100
@@ -58,7 +58,7 @@ class AdminManager:
         )
 
         if response is not None:
-            logger.info("Successfully fetched orders")
+            logger.debug("Successfully fetched orders")
             self.orders: Dict = response
             self.orders_ready = True
             delay = 60 * 60 * 1000
