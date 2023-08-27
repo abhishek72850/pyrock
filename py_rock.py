@@ -1,9 +1,9 @@
 import sublime
 import sublime_plugin
 from sublime import Edit
+from typing import Optional
 
 from .src.commands.base_indexer import BaseIndexer
-from .src.commands.settings_command import PyRockOpenFileCommand, PyRockEditSettingsCommand
 from .src.commands.import_symbol import ImportSymbolCommand
 from .src.commands.re_index_imports import ReIndexImportsCommand
 from .src.commands.admin import AdminManager
@@ -16,12 +16,12 @@ admin = AdminManager(window=sublime.active_window())
 
 
 def plugin_loaded():
-    logger.info(f"[{PyRockConstants.PACKAGE_NAME}]..........loaded")
+    logger.debug(f"[{PyRockConstants.PACKAGE_NAME}]..........loaded")
     admin.initialize()
     admin.run()
 
 def plugin_unloaded():
-    logger.info(f"[{PyRockConstants.PACKAGE_NAME}]..........unloaded")
+    logger.debug(f"[{PyRockConstants.PACKAGE_NAME}]..........unloaded")
 
 
 class PyRockCommand(sublime_plugin.TextCommand):
@@ -42,6 +42,15 @@ class PyRockCommand(sublime_plugin.TextCommand):
             cmd = ReIndexImportsCommand()
             cmd.run(sublime.active_window())
 
+    def is_enabled(self):
+        """
+            Disable command if view is not python file or syntax is not python
+        """
+        file_name: Optional[str] = self.view.file_name()
+        if (file_name and file_name.endswith(".py")) or self.view.syntax().name == "Python":
+            return True
+        logger.debug("View is not python file or have a python syntax, disabling commands")
+        return False
 
 class ImportAutoIndexerCommand(BaseIndexer):
     def run(self):
