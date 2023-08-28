@@ -65,10 +65,30 @@ Usage
   <img width="589" alt="Import symbol" src="https://github.com/abhishek72850/pyrock/assets/18554923/eb1421ff-4304-40f5-aca8-eaea84c96145">
   <img width="584" alt="import suggestions" src="https://github.com/abhishek72850/pyrock/assets/18554923/a64fadef-9554-4840-929b-72a93f27c799">
 
+Key Bindings
+------------
+- By default key bindings for this plugin are disabled, to enable it you simply goto `Preferences` -> `Package Settings` -> `PyRock` -> `Key Bindings` and then copy paste from left view to your right view and uncomment it or you can copy the below directly to your right view and save it:
+```
+[
+  // Both of the key binding generate import statement suggestions for the selected text
+  {
+    "keys": ["super+shift+;"],
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  },
+  {
+    "keys": ["ctrl+shift+;"],
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  }
+]
+```
+
 Compatibility
 -------------
 - Require Sublime Text version > 3
 - Works for `Python Imports` only
+- Best experience with linter support [Optional]
 
 
 [code-coverage-shield]: https://img.shields.io/codecov/c/github/abhishek72850/pyrock/master?style=for-the-badge
