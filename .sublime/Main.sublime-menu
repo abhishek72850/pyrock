@@ -12,7 +12,7 @@
                 "caption": "Settings",
                 "command": "edit_settings",
                 "args": {
-                  "base_file": "${packages}/pyrock/.sublime/pyrock.sublime-settings",
+                  "base_file": "${packages}/PyRock/.sublime/pyrock.sublime-settings",
                   "user_file": "${packages}/User/pyrock.sublime-settings",
                   "default": "// Settings in here override those in \"${packages}/User/pyrock.sublime-settings\",\n\n{\n\t$0\n}\n"
                 }
@@ -21,7 +21,7 @@
                 "caption": "Key Bindings",
                 "command": "edit_settings",
                 "args": {
-                  "base_file": "${packages}/pyrock/.sublime/Default (${platform}).sublime-keymap",
+                  "base_file": "${packages}/PyRock/.sublime/Default (${platform}).sublime-keymap",
                   "user_file": "${packages}/User/Default (${platform}).sublime-keymap",
                   "default": ""
                 }
