@@ -1,12 +1,14 @@
 [
-  {
-    "keys": ["super+shift+;"],
-    "command": "py_rock",
-    "args": { "action": "import_symbol" }
-  },
-  {
-    "keys": ["ctrl+shift+;"],
-    "command": "py_rock",
-    "args": { "action": "import_symbol" }
-  }
+  // To enable or change an existing key binding, copy it to the right view and uncomment, if needed.
+  // To change the associated key press, edit the "keys" value.
+  // {
+  //   "keys": ["super+shift+;"],
+  //   "command": "py_rock",
+  //   "args": { "action": "import_symbol" }
+  // },
+  // {
+  //   "keys": ["ctrl+shift+;"],
+  //   "command": "py_rock",
+  //   "args": { "action": "import_symbol" }
+  // }
 ]
