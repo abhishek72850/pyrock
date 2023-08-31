@@ -6,6 +6,7 @@ import inspect
 import json
 from collections import defaultdict
 import importlib
+import traceback
 from typing import List, Dict, Tuple, Set
 from types import FunctionType, ModuleType
 import logging
@@ -110,8 +111,8 @@ class Indexer:
                 f"{parent_module_name}.{module_name}",
                 self.get_module_members(module_obj)
             )
-
-    def run(self):
+    
+    def _run(self):
         self.parse_serialized_settings()
 
         system_module_name_list: Set[str] = {
@@ -158,6 +159,17 @@ class Indexer:
         logger.debug(f"Imported path count: {self.import_path_count}")
 
         self.save_imports_to_cache()
+
+    def run(self):
+        try:
+            self._run()
+        except Exception:
+            # Send error Flag
+            print("FAILED_INDEXING", flush=True)
+            error_details = traceback.format_exc()
+            logger.debug(f"Indexing failed due to: {error_details}")
+            # Send error details to plugin
+            print(error_details, flush=True)
 
 if __name__ == '__main__':
     Indexer().run()
