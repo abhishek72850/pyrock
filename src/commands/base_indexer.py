@@ -116,7 +116,6 @@ class BaseIndexer:
         """
         windows_without_env_bash = """
             python -u "{indexer_script_path}"
-            deactivate
         """
 
         if sublime.platform() in [
