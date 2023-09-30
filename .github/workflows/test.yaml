@@ -32,7 +32,6 @@ jobs:
       fail-fast: false
       matrix:
         st-version: [4]
-        os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
