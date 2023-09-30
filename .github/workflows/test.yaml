@@ -31,13 +31,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        st-version: 4
+        st-version: "4"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
       - uses: SublimeText/UnitTesting/actions/setup@v1
         with:
-          sublime-text-version: 4
+          sublime-text-version: "4"
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
           coverage: true
