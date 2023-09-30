@@ -35,11 +35,10 @@ def walk_sub_modules(plugin_name, base_path):
         import_sub_module(f"{parent_module_path}.{file_name}")
 
 def reload():
-  plugin = None
   try:
     plugin = importlib.import_module("PyRock")
   except ModuleNotFoundError:
-    plugin = importlib.import_module("pyrock")
+    plugin = None
   
   if not plugin:
     return
