@@ -7,8 +7,8 @@ class TestPyRock(PyRockTestBase):
     def setUp(self):
         super().setUp()
 
-    @mock.patch("PyRock.src.commands.re_index_imports.ReIndexImportsCommand.run")
-    @mock.patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.run")
+    @mock.patch("pyrock.src.commands.re_index_imports.ReIndexImportsCommand.run")
+    @mock.patch("pyrock.src.commands.import_symbol.ImportSymbolCommand.run")
     def test_py_rock_action_import_symbol(
         self,
         mock_import_symbol_run,

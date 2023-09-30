@@ -8,7 +8,7 @@ class TestIndexer(PyRockTestBase):
     def setUp(self):
         super().setUp()
 
-    @mock.patch("PyRock.src.commands.base_indexer.BaseIndexer._run_import_indexer")
+    @mock.patch("pyrock.src.commands.base_indexer.BaseIndexer._run_import_indexer")
     def test_run_indexer(
         self,
         mocked_run_import_indexer,
