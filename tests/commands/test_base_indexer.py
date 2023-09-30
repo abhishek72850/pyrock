@@ -1,14 +1,14 @@
 import sublime
 from unittest import mock
 from tests.base import PyRockTestBase
-from pyrock.src.commands.base_indexer import BaseIndexer
+from PyRock.src.commands.base_indexer import BaseIndexer
 
 
 class TestIndexer(PyRockTestBase):
     def setUp(self):
         super().setUp()
 
-    @mock.patch("pyrock.src.commands.base_indexer.BaseIndexer._run_import_indexer")
+    @mock.patch("PyRock.src.commands.base_indexer.BaseIndexer._run_import_indexer")
     def test_run_indexer(
         self,
         mocked_run_import_indexer,

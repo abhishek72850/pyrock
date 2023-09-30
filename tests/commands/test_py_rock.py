@@ -1,14 +1,14 @@
 import sublime
 from unittest import mock
 from tests.base import PyRockTestBase
-from pyrock.py_rock import ImportAutoIndexerCommand
+from PyRock.py_rock import ImportAutoIndexerCommand
 
 class TestPyRock(PyRockTestBase):
     def setUp(self):
         super().setUp()
 
-    @mock.patch("pyrock.src.commands.re_index_imports.ReIndexImportsCommand.run")
-    @mock.patch("pyrock.src.commands.import_symbol.ImportSymbolCommand.run")
+    @mock.patch("PyRock.src.commands.re_index_imports.ReIndexImportsCommand.run")
+    @mock.patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.run")
     def test_py_rock_action_import_symbol(
         self,
         mock_import_symbol_run,
