@@ -1,7 +1,7 @@
 import sublime
 from unittest import mock
 from tests.base import PyRockTestBase
-from PyRock.src.commands.base_indexer import BaseIndexer
+from pyrock.src.commands.base_indexer import BaseIndexer
 
 
 class TestIndexer(PyRockTestBase):

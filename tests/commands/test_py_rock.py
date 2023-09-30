@@ -1,7 +1,7 @@
 import sublime
 from unittest import mock
 from tests.base import PyRockTestBase
-from PyRock.py_rock import ImportAutoIndexerCommand
+from pyrock.py_rock import ImportAutoIndexerCommand
 
 class TestPyRock(PyRockTestBase):
     def setUp(self):
