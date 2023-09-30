@@ -13,7 +13,18 @@ class TestImportSymbol(PyRockTestBase):
     def setText(self, string):
         self.view.run_command("insert", {"characters": string})
 
-    def test_import_symbol(self):
+    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.generate_imports_from_user_python_imports")
+    def test_import_symbol(
+        self,
+        mocked_generate_imports_from_user_python_imports,
+    ):
+        mocked_generate_imports_from_user_python_imports.return_value = {
+            "import cmath": {
+                "from_part": "import cmath",
+                "symbol": "cmath"
+            }
+        }
+
         insert_text = "cmath"
         self.setText(insert_text)
 
@@ -30,7 +41,17 @@ class TestImportSymbol(PyRockTestBase):
         )
         self.assertEqual(expected_import_statement, "import cmath")
 
-    def test_multi_line_import(self):
+    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.generate_imports_from_user_python_imports")
+    def test_multi_line_import(
+        self,
+        mocked_generate_imports_from_user_python_imports
+    ):
+        mocked_generate_imports_from_user_python_imports.return_value = {
+            "import cmath": {
+                "from_part": "import cmath",
+                "symbol": "cmath"
+            }
+        }
         insert_text = "import subprocess\ncmath"
         self.setText(insert_text)
         self.view.sel().clear()
