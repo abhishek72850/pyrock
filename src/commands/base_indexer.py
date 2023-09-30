@@ -96,21 +96,8 @@ class BaseIndexer:
                 logger.error(message)
         
         return script_success, message
-    
-    def _run_indexer(self, window: Window, force=False):
-        if self._is_indexing_needed() and not force:
-            logger.debug("Indexing not needed")
-            window.status_message("Indexing not needed")
-            return
 
-        self._command_error_evidence: List[str] = []
-
-        self._generate_serialized_settings()
-
-        window.set_status_bar_visible(True)
-
-        window.status_message("Indexing imports...")
-
+    def _get_import_command(self) -> str:
         unix_env_bash = """
             set -e
             source "{venv_path}"
@@ -155,6 +142,24 @@ class BaseIndexer:
                 import_command = windows_without_env_bash.format(
                     indexer_script_path=self._get_indexer_script_path()
                 )
+
+        return import_command
+    
+    def _run_indexer(self, window: Window, force=False):
+        if self._is_indexing_needed() and not force:
+            logger.debug("Indexing not needed")
+            window.status_message("Indexing not needed")
+            return
+
+        self._command_error_evidence: List[str] = []
+
+        self._generate_serialized_settings()
+
+        window.set_status_bar_visible(True)
+
+        window.status_message("Indexing imports...")
+
+        import_command: str = self._get_import_command()
         
         logger.debug(f"Import shell command using: {import_command}")
         success, message = self._run_import_indexer(window, import_command)

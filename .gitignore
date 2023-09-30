@@ -163,3 +163,5 @@ cython_debug/
 exp.py
 exp.sh
 exp2.py
+pyrock.sublime-project
+pyrock.sublime-workspace

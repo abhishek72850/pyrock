@@ -1,6 +1,6 @@
 import sublime
 from sublime import Window
-from ..commands.base_indexer import BaseIndexer
+from .base_indexer import BaseIndexer
 from ..logger import Logger
 from pathlib import Path
 
@@ -10,6 +10,9 @@ path = Path(__file__)
 
 
 class ReIndexImportsCommand(BaseIndexer):
+    def __init__(self, test: bool = False):
+        self.test = test
+
     def run(self, window: Window):
         result: bool = sublime.ok_cancel_dialog(
             msg="Are you sure to re-index imports?",

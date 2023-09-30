@@ -1,7 +1,13 @@
+import importlib
 import sublime
 import sublime_plugin
 from sublime import Edit
 from typing import Optional
+
+# Reloads the submodules
+from .src import reloader
+importlib.reload(reloader)
+reloader.reload()
 
 from .src.commands.base_indexer import BaseIndexer
 from .src.commands.import_symbol import ImportSymbolCommand
@@ -9,7 +15,6 @@ from .src.commands.re_index_imports import ReIndexImportsCommand
 from .src.commands.admin import AdminManager
 from .src.logger import Logger
 from .src.constants import PyRockConstants
-
 
 logger = Logger(__name__)
 admin = AdminManager(window=sublime.active_window())
@@ -25,7 +30,7 @@ def plugin_unloaded():
 
 
 class PyRockCommand(sublime_plugin.TextCommand):
-    def run(self, edit: Edit, action: str):
+    def run(self, edit: Edit, action: str, test: bool = False):
         # Run admin checks
         admin.run()
 
@@ -35,14 +40,15 @@ class PyRockCommand(sublime_plugin.TextCommand):
             cmd = ImportSymbolCommand(
                 window=sublime.active_window(),
                 edit=edit,
-                view=self.view
+                view=self.view,
+                test=test,
             )
             cmd.run()
         if action == "re_index_imports":
-            cmd = ReIndexImportsCommand()
+            cmd = ReIndexImportsCommand(test=test)
             cmd.run(sublime.active_window())
 
-    def is_enabled(self):
+    def is_enabled(self, action: str, test: bool = False):
         """
             Disable command if view is not python file or syntax is not python
         """
