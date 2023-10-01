@@ -67,3 +67,28 @@ class ImportAutoIndexerCommand(BaseIndexer):
         sublime.set_timeout_async(lambda: self._run_indexer(sublime.active_window()), 0)
 
 ImportAutoIndexerCommand().run()
+
+
+class PyRockReplaceTextCommand(sublime_plugin.TextCommand):
+    """
+        The py_rock_replace_text command implementation,
+        for some reason on linux the view insert and replace
+        method doesn't work, so as a alternative created this command
+        to put text in the view.
+    """
+
+    def run(self, edit: Edit, start: int, end: int, text: str):
+        """Replace the content of a region with new text.
+
+        Arguments:
+            edit (Edit):
+                The edit object to identify this operation.
+            start (int):
+                The beginning of the Region to replace.
+            end (int):
+                The end of the Region to replace.
+            text (string):
+                The new text to replace the content of the Region with.
+        """
+        region = sublime.Region(start, end)
+        self.view.replace(edit, region, text)

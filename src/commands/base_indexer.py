@@ -100,7 +100,7 @@ class BaseIndexer:
     def _get_import_command(self) -> str:
         unix_env_bash = """
             set -e
-            source "{venv_path}"
+            . "{venv_path}"
             python -u "{indexer_script_path}"
             deactivate
         """

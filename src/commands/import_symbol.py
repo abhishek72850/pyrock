@@ -64,7 +64,14 @@ class ImportSymbolCommand:
         logger.debug(f"Updated import statement text: {updated_import_text}")
 
         if updated_import_text:
-            self.view.replace(edit=self.sublime_edit, region=existing_import_region, text=updated_import_text)
+            self.view.run_command(
+                "py_rock_replace_text",
+                {
+                    "start": existing_import_region.begin(),
+                    "end": existing_import_region.end(),
+                    "text": updated_import_text
+                }
+            )
     
     def _insert_new_import_statement_region(
         self,
@@ -85,10 +92,24 @@ class ImportSymbolCommand:
 
             logger.debug(f"Added import {added_import}")
 
-            self.view.replace(edit=self.sublime_edit, region=matched_regions[-1], text=added_import)
+            self.view.run_command(
+                "py_rock_replace_text",
+                {
+                    "start": matched_regions[-1].begin(),
+                    "end": matched_regions[-1].end(),
+                    "text": added_import
+                }
+            )
         else:
             logger.debug("No import statement found, adding to the top")
-            self.view.insert(self.sublime_edit, 0, selected_import_option)
+            self.view.run_command(
+                "py_rock_replace_text",
+                {
+                    "start": 0,
+                    "end": 0,
+                    "text": selected_import_option
+                }
+            )
     
     def _add_import_to_view(self, index: int):
         if index < 0:

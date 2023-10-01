@@ -45,7 +45,7 @@ jobs:
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
           coverage: true
-          # codecov-upload: true
+          codecov-upload: true
       - uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
