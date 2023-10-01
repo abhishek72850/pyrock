@@ -1,6 +1,6 @@
 import os
 import re
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import sublime
 from sublime import Window
 from ..settings import PyRockSettings
@@ -77,15 +77,23 @@ class BaseIndexer:
             logger.debug(output)
             self._command_error_evidence.append(output)
     
-    def _run_import_indexer(self, window: Window, indexer_command: str) -> Tuple[bool, str]:
-        process = subprocess.Popen(
-            indexer_command,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+    def _run_import_indexer(self, window: Window, indexer_command: Union[str, List]) -> Tuple[bool, str]:
         message: str = ""
-        script_success: bool = self._track_indexer_progress(window, process)
+        script_success: bool = False
+
+        try:
+            process = subprocess.Popen(
+                indexer_command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+        except Exception as e:
+            logger.error(str(e))
+            message = str(e)
+            return script_success, message
+        
+        script_success = self._track_indexer_progress(window, process)
 
         if not script_success:
             if len(self._command_error_evidence) > 0:
@@ -109,15 +117,6 @@ class BaseIndexer:
             python -u "{indexer_script_path}"
         """
 
-        windows_env_bash = """
-            "{venv_path}"
-            python -u "{indexer_script_path}"
-            deactivate
-        """
-        windows_without_env_bash = """
-            python -u "{indexer_script_path}"
-        """
-
         if sublime.platform() in [
             PyRockConstants.PLATFORM_LINUX,
             PyRockConstants.PLATFORM_OSX
@@ -133,14 +132,19 @@ class BaseIndexer:
                 )
         else:
             if PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value:
-                import_command = windows_env_bash.format(
-                    venv_path=PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value,
-                    indexer_script_path=self._get_indexer_script_path()
+                venv_path = PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value.replace(
+                    '\\', '\\\\'
                 )
+                indexer_script_path = self._get_indexer_script_path().replace(
+                    '\\', '\\\\'
+                )
+                import_command = [
+                    venv_path, '&&', 'python', indexer_script_path, 'deactivate'
+                ]
             else:
-                import_command = windows_without_env_bash.format(
-                    indexer_script_path=self._get_indexer_script_path()
-                )
+                indexer_script_path = self._get_indexer_script_path().replace('\\', '\\\\')
+                import_command = ['python', indexer_script_path]
+
 
         return import_command
     
