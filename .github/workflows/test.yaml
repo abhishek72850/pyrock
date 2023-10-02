@@ -43,8 +43,8 @@ jobs:
         with:
           sublime-text-version: ${{ matrix.st-version }}
           package-name: ${{ env.PACKAGE }}
-      - run: sudo apt install at-spi2-core
-        shell: bash
+      # - run: sudo apt install at-spi2-core
+      #   shell: bash
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
           coverage: true
