@@ -139,7 +139,7 @@ class AdminManager:
             )
 
     def _check_sublime_version(self):
-        if int(sublime.version()) < 3000:
+        if int(sublime.version()) < 4000:
             logger.error(f"Sublime version {sublime.version()} is not supported")
             sublime.error_message(
                 f"Sublime version {sublime.version()} is not supported. Please upgrade sublime"
