@@ -35,7 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         st-version: [4]
-        os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
+        os: ["ubuntu-latest", "windows-latest"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -45,6 +45,8 @@ jobs:
           package-name: ${{ env.PACKAGE }}
       # - run: sudo apt install at-spi2-core
       #   shell: bash
+      # - run:
+      # https://github.com/wbond/package_control/releases/download/4.0.0-beta8/Package.Control.sublime-package
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
           coverage: true
