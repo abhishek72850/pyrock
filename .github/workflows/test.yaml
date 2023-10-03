@@ -50,8 +50,10 @@ jobs:
       # https://github.com/wbond/package_control/releases/download/4.0.0-beta8/Package.Control.sublime-package
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
-          coverage: true
-          codecov-upload: true
-      # - uses: codecov/codecov-action@v3
-      #   env:
-      #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          coverage: false
+          codecov-upload: false
+      - uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./coverage.xml
