@@ -39,6 +39,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      - uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./coverage.xml
       - uses: SublimeText/UnitTesting/actions/setup@v1
         with:
           sublime-text-version: ${{ matrix.st-version }}
@@ -52,8 +57,3 @@ jobs:
         with:
           coverage: false
           codecov-upload: false
-      - uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        with:
-          files: ./coverage.xml
