@@ -5,9 +5,9 @@ from sublime import Edit
 from typing import Optional
 
 # Reloads the submodules
-from .src import reloader
-importlib.reload(reloader)
-reloader.reload()
+# from .src import reloader
+# importlib.reload(reloader)
+# reloader.reload()
 
 from .src.commands.base_indexer import BaseIndexer
 from .src.commands.import_symbol import ImportSymbolCommand

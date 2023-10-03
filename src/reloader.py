@@ -38,7 +38,7 @@ def reload():
   try:
     plugin = importlib.import_module("PyRock")
   except ModuleNotFoundError:
-    plugin = None
+    plugin = importlib.import_module("pyrock")
   
   if not plugin:
     return
