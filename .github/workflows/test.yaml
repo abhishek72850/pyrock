@@ -57,4 +57,4 @@ jobs:
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
           coverage: true
-          codecov-upload: false
+          codecov-upload: true
