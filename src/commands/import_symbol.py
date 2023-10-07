@@ -160,7 +160,7 @@ class ImportSymbolCommand:
             logger.debug("No user python import index found")
             return None
 
-        print(f"***10 Time taken {time.perf_counter() - start_time}")
+        logger.debug(f"Time taken to load index: {time.perf_counter() - start_time}")
 
         return import_map
 

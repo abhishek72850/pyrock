@@ -39,12 +39,12 @@ jobs:
         os: ["ubuntu-latest", "windows-latest"]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Disable Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            # Specify paths to cache, but leave it empty to disable caching
-          key: ${{ runner.os }}-${{ hashFiles('**/*.lock') }}
+      # - name: Disable Cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       # Specify paths to cache, but leave it empty to disable caching
+      #     key: ${{ runner.os }}-${{ hashFiles('**/*.lock') }}
       - uses: actions/checkout@v3
       # - uses: codecov/codecov-action@v3
       #   env:

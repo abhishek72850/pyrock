@@ -13,15 +13,16 @@ class TestImportSymbol(PyRockTestBase):
     def setText(self, string):
         self.view.run_command("insert", {"characters": string})
 
-    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.generate_imports_from_user_python_imports")
+    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.load_user_python_imports")
     def test_import_symbol(
         self,
-        mocked_generate_imports_from_user_python_imports,
+        mocked_load_user_python_imports,
     ):
-        mocked_generate_imports_from_user_python_imports.return_value = {
-            "import cmath": {
-                "from_part": "import cmath",
-                "symbol": "cmath"
+        mocked_load_user_python_imports.return_value = {
+            "c": {
+                "h": [
+                    "cmath"
+                ]
             }
         }
 
@@ -41,17 +42,19 @@ class TestImportSymbol(PyRockTestBase):
         )
         self.assertEqual(expected_import_statement, "import cmath")
 
-    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.generate_imports_from_user_python_imports")
+    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.load_user_python_imports")
     def test_multi_line_import(
         self,
-        mocked_generate_imports_from_user_python_imports
+        mocked_load_user_python_imports,
     ):
-        mocked_generate_imports_from_user_python_imports.return_value = {
-            "import cmath": {
-                "from_part": "import cmath",
-                "symbol": "cmath"
+        mocked_load_user_python_imports.return_value = {
+            "c": {
+                "h": [
+                    "cmath"
+                ]
             }
         }
+
         insert_text = "import subprocess\ncmath"
         self.setText(insert_text)
         self.view.sel().clear()
@@ -79,15 +82,16 @@ class TestImportSymbol(PyRockTestBase):
         )
         self.assertEqual(len(expected_import_statement_regions), 1)
 
-    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.generate_imports_from_user_python_imports")
+    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.load_user_python_imports")
     def test_add_module_import_in_existing_import(
         self,
-        mocked_generate_imports_from_user_python_imports,
+        mocked_load_user_python_imports,
     ):
-        mocked_generate_imports_from_user_python_imports.return_value = {
-            "from cmath import log10": {
-                "from_part": "from cmath",
-                "symbol": "log10"
+        mocked_load_user_python_imports.return_value = {
+            "l": {
+                "0": [
+                    "cmath.log10"
+                ]
             }
         }
 
