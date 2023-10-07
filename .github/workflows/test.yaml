@@ -56,5 +56,5 @@ jobs:
       # https://github.com/wbond/package_control/releases/download/4.0.0-beta8/Package.Control.sublime-package
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
         with:
-          coverage: false
+          coverage: true
           codecov-upload: false
