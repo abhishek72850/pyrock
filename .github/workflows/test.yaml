@@ -1,27 +1,3 @@
-# name: test
-
-# on: [push, pull_request]
-
-# jobs:
-#   run-tests:
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         st-version: [3, 4]
-#         os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
-#     runs-on: ${{ matrix.os }}
-#     steps:
-#       - uses: actions/checkout@v2
-#       - uses: SublimeText/UnitTesting/actions/setup@v1
-#         with:
-#           sublime-text-version: ${{ matrix.st-version }}
-#       - uses: SublimeText/UnitTesting/actions/run-tests@v1
-#         with:
-#           coverage: true
-#           codecov-upload: true
-#       - uses: codecov/codecov-action@v3
-#         env:
-#           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 name: test
 
 # on: [push, pull_request]
@@ -39,28 +15,15 @@ jobs:
         os: ["ubuntu-latest", "windows-latest"]
     runs-on: ${{ matrix.os }}
     steps:
-      # - name: Disable Cache
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       # Specify paths to cache, but leave it empty to disable caching
-      #     key: ${{ runner.os }}-${{ hashFiles('**/*.lock') }}
       - uses: actions/checkout@v3
-      # - uses: codecov/codecov-action@v3
-      #   env:
-      #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      #   with:
-      #     files: ./coverage.xml
       - uses: SublimeText/UnitTesting/actions/setup@v1
         with:
           sublime-text-version: ${{ matrix.st-version }}
           package-name: ${{ env.PACKAGE }}
-      # - run: pip install coverage
-      # - run: sudo apt install at-spi2-core
-      #   shell: bash
-      # - run:
-      # https://github.com/wbond/package_control/releases/download/4.0.0-beta8/Package.Control.sublime-package
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
+      - uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          coverage: true
-          codecov-upload: true
+          files: ./coverage.xml
+
