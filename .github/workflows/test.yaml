@@ -1,4 +1,4 @@
-name: test
+name: Run Tests
 
 on: [push]
 
@@ -20,11 +20,3 @@ jobs:
           sublime-text-version: ${{ matrix.st-version }}
           package-name: ${{ env.PACKAGE }}
       - uses: SublimeText/UnitTesting/actions/run-tests@v1
-      - name: Upload Code Coverage
-        if: github.ref == 'refs/heads/master'
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        with:
-          files: ./coverage.xml
-
