@@ -37,6 +37,9 @@ class TestImportSymbol(PyRockTestBase):
 
         self.view.run_command("py_rock", args={"action": "import_symbol", "test": True})
 
+        full_text = self.view.substr(sublime.Region(0, self.view.size()))
+        self.assertEqual(full_text, "********")
+
         expected_import_statement = self.view.substr(
             self.view.find("import cmath", 0, flags=FindFlags.LITERAL)
         )
