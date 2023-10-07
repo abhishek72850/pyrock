@@ -4,6 +4,7 @@ from unittesting import DeferrableTestCase
 
 class PyRockTestBase(DeferrableTestCase):
     def setUp(self):
+        sublime.log_commands(True)
         self.view = sublime.active_window().new_file(
             syntax='Packages/Python/Python.sublime-syntax'
         )
@@ -12,6 +13,7 @@ class PyRockTestBase(DeferrableTestCase):
         self.sublime_settings.set("close_windows_when_empty", False)
 
     def tearDown(self):
+        sublime.log_commands(False)
         if self.view:
             self.view.set_scratch(True)
             self.view.window().focus_view(self.view)
