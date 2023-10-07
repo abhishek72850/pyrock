@@ -15,10 +15,11 @@ path = Path(__file__)
 
 
 class ImportSymbolCommand:
-    def __init__(self, window, edit, view):
+    def __init__(self, window, edit, view, test: bool = False):
         self.window = window
         self.sublime_edit = edit
         self.view = view
+        self.test = test
 
     def _update_existing_import_statement_region(
         self,
@@ -63,7 +64,14 @@ class ImportSymbolCommand:
         logger.debug(f"Updated import statement text: {updated_import_text}")
 
         if updated_import_text:
-            self.view.replace(edit=self.sublime_edit, region=existing_import_region, text=updated_import_text)
+            self.view.run_command(
+                "py_rock_replace_text",
+                {
+                    "start": existing_import_region.begin(),
+                    "end": existing_import_region.end(),
+                    "text": updated_import_text
+                }
+            )
     
     def _insert_new_import_statement_region(
         self,
@@ -84,10 +92,24 @@ class ImportSymbolCommand:
 
             logger.debug(f"Added import {added_import}")
 
-            self.view.replace(edit=self.sublime_edit, region=matched_regions[-1], text=added_import)
+            self.view.run_command(
+                "py_rock_replace_text",
+                {
+                    "start": matched_regions[-1].begin(),
+                    "end": matched_regions[-1].end(),
+                    "text": added_import
+                }
+            )
         else:
             logger.debug("No import statement found, adding to the top")
-            self.view.insert(self.sublime_edit, 0, selected_import_option)
+            self.view.run_command(
+                "py_rock_replace_text",
+                {
+                    "start": 0,
+                    "end": 0,
+                    "text": selected_import_option
+                }
+            )
     
     def _add_import_to_view(self, index: int):
         if index < 0:
@@ -123,10 +145,14 @@ class ImportSymbolCommand:
 
 
     def load_user_python_imports(self) -> Optional[Dict[str, Dict]]:
-        file_path = os.path.join(PyRockConstants.INDEX_CACHE_DIRECTORY, PyRockConstants.IMPORT_INDEX_FILE_NAME)
+        import time
+        file_path = os.path.join(
+            PyRockConstants.INDEX_CACHE_DIRECTORY,
+            PyRockConstants.IMPORT_INDEX_FILE_NAME
+        )
 
         import_map: Dict[str, Dict] = {}
-
+        start_time = time.perf_counter()
         if os.path.exists(file_path):
             with open(file_path, 'r') as f:
                 import_map = json.load(f)
@@ -134,14 +160,16 @@ class ImportSymbolCommand:
             logger.debug("No user python import index found")
             return None
 
+        logger.debug(f"Time taken to load index: {time.perf_counter() - start_time}")
+
         return import_map
 
     def generate_imports_from_sublime_result(
         self,
         selected_text: str,
         symbol_locations: List[SymbolLocation]
-    ) -> Dict[str, str]:
-        import_statements: Dict[str, str] = {}
+    ) -> Dict[str, Dict]:
+        import_statements: Dict[str, Dict] = {}
 
         for symbol_location in symbol_locations:
             if symbol_location.display_name.endswith(".py"):
@@ -157,8 +185,8 @@ class ImportSymbolCommand:
         self,
         selected_text: str,
         user_python_import_map: Dict[str, Dict]
-    ) -> Dict[str, str]:
-        import_statements: Dict[str, str] = {}
+    ) -> Dict[str, Dict]:
+        import_statements: Dict[str, Dict] = {}
 
         if user_python_import_map.get(selected_text[0], {}).get(selected_text[-1]):
             import_paths = user_python_import_map[selected_text[0]][selected_text[-1]]
@@ -202,7 +230,7 @@ class ImportSymbolCommand:
         )
         logger.debug(f"Sublime importer result {symbol_locations}")
 
-        self.import_statements: Dict[str, str] = {}
+        self.import_statements: Dict[str, Dict] = {}
 
         if selected_text:
             self.import_statements = self.generate_imports_from_sublime_result(
@@ -229,8 +257,11 @@ class ImportSymbolCommand:
         )
 
         if len(self.import_statements) > 0:
-            self.view.show_popup_menu(
-                items=list(self.import_statements.keys()),
-                on_done=self._add_import_to_view,
-                flags=0
-            )
+            if self.test:
+                self._add_import_to_view(index=0)
+            else:
+                self.view.show_popup_menu(
+                    items=list(self.import_statements.keys()),
+                    on_done=self._add_import_to_view,
+                    flags=0
+                )

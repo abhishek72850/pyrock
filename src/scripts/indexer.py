@@ -7,6 +7,7 @@ import json
 from collections import defaultdict
 import importlib
 import traceback
+import typing
 from typing import List, Dict, Tuple, Set
 from types import FunctionType, ModuleType
 import logging
@@ -73,6 +74,18 @@ class Indexer:
         except Exception:
             return []
 
+    def get_built_in_function_members(self, module):
+        try:
+            return inspect.getmembers(module, inspect.isbuiltin)
+        except Exception:
+            return []
+
+    def get_all_members(self, module):
+        try:
+            return inspect.getmembers(module)
+        except Exception:
+            return []
+
     def _index_module_class_and_function_members(
         self,
         parent_module_path: str,
@@ -87,6 +100,19 @@ class Indexer:
         for function_name, function_obj in module_functions:
             function_path = f"{parent_module_path}.{function_name}"
             self._store_in_map(function_path)
+
+        module_built_in_functions: List[Tuple[str, FunctionType]] = self.get_built_in_function_members(module)
+        for built_in_name, function_obj in module_built_in_functions:
+            built_in_path = f"{parent_module_path}.{built_in_name}"
+            self._store_in_map(built_in_path)
+
+        # Special case to handle typing module classes
+        if "typing" in parent_module_path:
+            all_members = self.get_all_members(module)
+            for member_name, member_obj in all_members:
+                if isinstance(member_obj, typing._GenericAlias):
+                    alias_path = f"{parent_module_path}.{member_name}"
+                    self._store_in_map(alias_path)
 
     def _index_sub_module_members(
         self,
