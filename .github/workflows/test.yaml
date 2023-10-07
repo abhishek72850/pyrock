@@ -24,7 +24,8 @@
 #           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 name: test
 
-on: [push, pull_request]
+# on: [push, pull_request]
+on: [push]
 
 env:
   PACKAGE: PyRock
