@@ -86,7 +86,7 @@ Key Bindings
 
 Compatibility
 -------------
-- Require Sublime Text version > 3
+- Require Sublime Text version >= 4
 - Works for `Python Imports` only
 - Best experience with linter support [Optional]
 
