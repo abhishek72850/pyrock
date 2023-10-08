@@ -1,5 +1,7 @@
 PyRock
 ================
+[![Sublime Text][sublime-shield]][sublime-url]
+[![Plugin Download][plugin-download-shield]][plugin-download-url]
 [![Code Coverage][code-coverage-shield]][code-coverage-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -101,3 +103,7 @@ Compatibility
 [issues-url]: https://github.com/abhishek72850/pyrock/issues
 [release-shield]: https://img.shields.io/github/v/release/abhishek72850/pyrock.svg?style=for-the-badge
 [release-url]: https://img.shields.io/github/v/release/abhishek72850/pyrock
+[sublime-shield]: https://img.shields.io/badge/Made%20For-Sublime%204-ff9800?logo=sublime%20text&style=for-the-badge
+[sublime-url]: https://www.sublimetext.com/
+[plugin-download-shield]: https://img.shields.io/packagecontrol/dt/PyRock?style=for-the-badge
+[plugin-download-url]: https://packagecontrol.io/packages/PyRock
