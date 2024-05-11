@@ -116,7 +116,7 @@ class SettingsTestConfigField(PyRockSettingsFieldBase):
             self.WORKING_DIR = self._field_value.get("working_directory")
             if self.WORKING_DIR is None or (self.WORKING_DIR and not os.path.exists(self.WORKING_DIR)):
                 raise InvalidTestConfig(
-                    f"Invalid or not existing working directory {self.TEST_FRAMEWORK}"
+                    f"Invalid or not existing working directory {self.WORKING_DIR}"
                 )
 
             self.TEST_RUNNER_COMMAND = self._field_value.get("test_runner_command")

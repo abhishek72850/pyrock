@@ -80,25 +80,21 @@ class AnnotateAndTestRunnerCommand:
                     test_path=test_path,
                 )
         else:
+            working_directory = PyRockSettings().TEST_CONFIG.WORKING_DIR.replace(
+                '\\', '\\\\'
+            )
+            run_test_command = " ".join(
+                PyRockSettings().TEST_CONFIG.TEST_RUNNER_COMMAND
+            ).replace('\\', '\\\\')
+
             if PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value:
                 venv_path = PyRockSettings().PYTHON_VIRTUAL_ENV_PATH.value.replace(
                     '\\', '\\\\'
                 )
-                working_directory = PyRockSettings().TEST_CONFIG.WORKING_DIR.replace(
-                    '\\', '\\\\'
-                )
-                run_test_command = " ".join(
-                    PyRockSettings().TEST_CONFIG.TEST_RUNNER_COMMAND
-                ).replace('\\', '\\\\')
-
                 test_command = [
                     venv_path, '&&', 'cd', working_directory, '&&', run_test_command, test_path, 'deactivate'
                 ]
             else:
-                run_test_command = " ".join(
-                    PyRockSettings().TEST_CONFIG.TEST_RUNNER_COMMAND
-                ).replace('\\', '\\\\')
-
                 test_command = ['cd', working_directory, '&&', run_test_command, test_path]
 
         return test_command
@@ -351,6 +347,8 @@ class AnnotateAndTestRunnerCommand:
             PyRockConstants.RELATIVE_PACKAGE_ASSETS_DIR,
             "beaker.png"
         )
+        if sublime.platform() == PyRockConstants.PLATFORM_WINDOWS:
+            test_gutter_icon_path = test_gutter_icon_path.replace('\\', '/')
 
         self.region_key = f"pyrock-gutter-icon-{self.view.id()}"
 
