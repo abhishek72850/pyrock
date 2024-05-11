@@ -139,7 +139,7 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
             output_text = output_panel_view.substr(
                 sublime.Region(0, output_panel_view.size())
             )
-            self.assertTrue(test_command in output_text)
+            self.assertEqual(test_command, output_text)
 
     @patch("os.path.exists")
     @patch("sublime.platform")
