@@ -24,8 +24,8 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
         )
 
         # wait for view to open
-        while test_file_view.is_loading():
-            pass
+        # while test_file_view.is_loading():
+        #     pass
 
         return test_file_view
 
@@ -46,43 +46,43 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
 
         self.assertEqual(len(annotated_regions), 3)
 
-    # @patch("os.path.exists")
-    # @patch("PyRock.src.commands.annotate_and_test_runner.AnnotateAndTestRunnerCommand._run_test_command")
-    # @patch("sublime.load_settings")
-    # def test_click_on_annotated_html(
-    #     self,
-    #     mocked_load_settings,
-    #     mocked_run_test_command,
-    #     mocked_os_path_exists,
-    # ):
-    #     mocked_load_settings.return_value = {
-    #       "python_venv_path": "/Users/abhishek/venv/bin/activate",
-    #       "log_level": "debug",
-    #       "test_config": {
-    #           "enabled": True,
-    #           "test_framework": "pytest",
-    #           "working_directory": "/Users/abhishek/",
-    #           "test_runner_command": ["pytest"],
-    #       }
-    #     }
-    #     mocked_os_path_exists.return_value = True
+    @patch("os.path.exists")
+    @patch("PyRock.src.commands.annotate_and_test_runner.AnnotateAndTestRunnerCommand._run_test_command")
+    @patch("sublime.load_settings")
+    def test_click_on_annotated_html(
+        self,
+        mocked_load_settings,
+        mocked_run_test_command,
+        mocked_os_path_exists,
+    ):
+        mocked_load_settings.return_value = {
+          "python_venv_path": "/Users/abhishek/venv/bin/activate",
+          "log_level": "debug",
+          "test_config": {
+              "enabled": True,
+              "test_framework": "pytest",
+              "working_directory": "/Users/abhishek/",
+              "test_runner_command": ["pytest"],
+          }
+        }
+        mocked_os_path_exists.return_value = True
 
-    #     test_file_view = self._open_test_fixture_file()
+        test_file_view = self._open_test_fixture_file()
 
-    #     self.test_runner_cmd.run(test_file_view)
-    #     self.test_runner_cmd._execute_test("0")
+        self.test_runner_cmd.run(test_file_view)
+        self.test_runner_cmd._execute_test("0")
 
-    #     test_command = """
-    #         set -e
-    #         . "/Users/abhishek/venv/bin/activate"
-    #         cd "/Users/abhishek/"
-    #         pytest tests/fixtures/test_fixture.py::MyTestCase
-    #         deactivate
-    #     """
+        test_command = """
+            set -e
+            . "/Users/abhishek/venv/bin/activate"
+            cd "/Users/abhishek/"
+            pytest tests/fixtures/test_fixture.py::MyTestCase
+            deactivate
+        """
 
-    #     mocked_run_test_command.assert_called_once_with(
-    #         test_command
-    #     )
+        mocked_run_test_command.assert_called_once_with(
+            test_command
+        )
 
     @patch("PyRock.src.commands.output_panel.OutputPanel.show")
     @patch("PyRock.src.settings.SettingsTestConfigField._get_value")
