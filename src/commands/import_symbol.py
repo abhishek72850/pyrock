@@ -253,7 +253,15 @@ class ImportSymbolCommand:
             )
 
         self.import_statements = dict(
-            sorted(self.import_statements.items(), key=lambda k: k[0])
+            sorted(
+                self.import_statements.items(),
+                # put imports first, then sort by depth, then by name
+                key=lambda k: (
+                    not k[0].startswith("import "),
+                    k[0].count("."),
+                    k[0],
+                ),
+            )
         )
 
         self.view.erase_status(PyRockConstants.PACKAGE_NAME)
