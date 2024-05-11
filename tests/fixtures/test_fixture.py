@@ -5,7 +5,7 @@ from django.test import TestCase
 class MyTestCase(TestCase):
     def test_long_running_task(self):
         # Simulate a long-running task
-        time.sleep(20)
+        time.sleep(5)
         # Add your actual test assertions here (if any)
         self.assertEqual(1 + 1, 2)
 
