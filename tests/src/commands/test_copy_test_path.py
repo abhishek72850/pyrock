@@ -106,7 +106,8 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations:
 
             mocked_get_test_config.return_value = {
                 "enabled": True,
@@ -114,6 +115,11 @@ class TestCopyTestPathCommand(PyRockTestBase):
                 "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
                 "test_runner_command": ["pytest"]
             }
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             test_file_view.sel().clear()
             test_file_view.sel().add(
@@ -218,13 +224,19 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations:
             mocked_get_test_config.return_value = {
                 "enabled": True,
                 "test_framework": "pytest",
                 "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
                 "test_runner_command": ["pytest"]
             }
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             test_file_view.sel().clear()
             test_file_view.sel().add(
