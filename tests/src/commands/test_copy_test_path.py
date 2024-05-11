@@ -23,7 +23,9 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("sublime.load_settings") as mocked_load_settings, patch("os.path.exists") as mocked_os_path_exists:
+        with patch("sublime.load_settings") as mocked_load_settings, \
+        patch("os.path.exists") as mocked_os_path_exists, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations:
 
             mocked_load_settings.return_value = {
               "python_venv_path": "/Users/abhishek/venv/bin/activate",
@@ -36,6 +38,11 @@ class TestCopyTestPathCommand(PyRockTestBase):
               }
             }
             mocked_os_path_exists.return_value = True
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             test_file_view.sel().clear()
             test_file_view.sel().add(sublime.Region(53, 63))
@@ -60,7 +67,8 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations:
 
             mocked_get_test_config.return_value = {
                 "enabled": True,
@@ -68,6 +76,11 @@ class TestCopyTestPathCommand(PyRockTestBase):
                 "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
                 "test_runner_command": ["pytest"]
             }
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             test_file_view.sel().clear()
             test_file_view.sel().add(sublime.Region(83, 105))
@@ -125,13 +138,19 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations:
             mocked_get_test_config.return_value = {
                 "enabled": True,
                 "test_framework": "pytest",
                 "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
                 "test_runner_command": ["pytest"]
             }
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             test_file_view.sel().clear()
             test_file_view.sel().add(sublime.Region(53, 63))
@@ -156,13 +175,19 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations:
             mocked_get_test_config.return_value = {
                 "enabled": True,
                 "test_framework": "pytest",
                 "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
                 "test_runner_command": ["pytest"]
             }
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             test_file_view.sel().clear()
             test_file_view.sel().add(sublime.Region(83, 105))

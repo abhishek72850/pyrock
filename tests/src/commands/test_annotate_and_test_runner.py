@@ -48,7 +48,10 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("os.path.exists") as mocked_os_path_exists, patch("sublime.load_settings") as mocked_load_settings, patch("PyRock.src.commands.annotate_and_test_runner.AnnotateAndTestRunnerCommand._run_test_command") as mocked_run_test_command:
+        with patch("os.path.exists") as mocked_os_path_exists, \
+        patch("sublime.load_settings") as mocked_load_settings, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations, \
+        patch("PyRock.src.commands.annotate_and_test_runner.AnnotateAndTestRunnerCommand._run_test_command") as mocked_run_test_command:
 
             mocked_load_settings.return_value = {
               "python_venv_path": "/Users/abhishek/venv/bin/activate",
@@ -61,6 +64,11 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
               }
             }
             mocked_os_path_exists.return_value = True
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             self.test_runner_cmd.run(test_file_view)
             self.test_runner_cmd._execute_test("0")
@@ -85,13 +93,24 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        with patch("PyRock.src.commands.output_panel.OutputPanel.show") as mocked_panel_show, patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
+        with patch("PyRock.src.commands.output_panel.OutputPanel.show") as mocked_panel_show, \
+        patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("subprocess.Popen") as mocked_process:
             mocked_get_test_config.return_value = {
                 "enabled": True,
                 "test_framework": "pytest",
                 "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
                 "test_runner_command": ["pytest"]
             }
+
+            class TestProcess:
+                returncode = -1
+                stdout = []
+
+                def wait(self):
+                    pass
+
+            mocked_process.return_value = TestProcess()
 
             self.test_runner_cmd.run(test_file_view)
             self.test_runner_cmd._execute_test("0")
