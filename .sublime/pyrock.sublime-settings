@@ -3,5 +3,11 @@
     "python_venv_path": "",
     "python_interpreter_path": "",
     "log_level": "info",
-    "import_scan_depth": 4
+    "import_scan_depth": 4,
+    "test_config": {
+        "enabled": false,
+        "test_framework": "",
+        "working_directory": "",
+        "test_runner_command": [],
+    }
 }
