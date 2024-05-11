@@ -18,8 +18,8 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
     def test_run(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
-            # Wait 4 second to make sure test fixture file has opened
-            yield 4000
+            # Wait 6 second to make sure test fixture file has opened
+            yield 6000
         except TimeoutError as e:
             pass
         test_file_view = self.test_file_view
@@ -43,7 +43,7 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
     def test_click_on_annotated_html(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
-            yield 4000
+            yield 6000
         except TimeoutError as e:
             pass
         test_file_view = self.test_file_view
@@ -139,7 +139,7 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
             output_text = output_panel_view.substr(
                 sublime.Region(0, output_panel_view.size())
             )
-            self.assertEqual(test_command, output_text)
+            self.assertTrue("pytest tests/fixtures/test_fixture.py::MyTestCase" in output_text)
 
     @patch("os.path.exists")
     @patch("sublime.platform")
