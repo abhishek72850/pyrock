@@ -81,7 +81,7 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
             deactivate
         """
 
-            if sublime.platform == PyRockConstants.PLATFORM_WINDOWS:
+            if sublime.platform() == PyRockConstants.PLATFORM_WINDOWS:
                 mocked_run_test_command.assert_called_once_with(
                     [
                         '/Users/abhishek/venv/bin/activate',
