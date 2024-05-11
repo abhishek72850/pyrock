@@ -312,7 +312,7 @@ class AnnotateAndTestRunnerCommand:
             logger.info("Test config not enabled")
             return
 
-        if not is_test_file(self.view.file_name()):
+        if self.view.file_name() is None or (self.view.file_name() and not is_test_file(self.view.file_name())):
             logger.info("Not a test file, returning")
             return
 
