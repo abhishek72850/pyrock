@@ -5,7 +5,9 @@
     "children":
     [
       { "command": "py_rock", "args": {"action": "import_symbol"}, "caption": "Import Symbol" },
+      { "command": "py_rock", "args": {"action": "copy_import_symbol"}, "caption": "Copy Import Symbol" },
       { "command": "py_rock", "args": {"action": "re_index_imports"}, "caption": "Re-Index Imports" },
+      { "command": "py_rock", "args": {"action": "copy_test_path"}, "caption": "Copy test path" },
     ]
   }
 ]
