@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>name</key>
+    <string>Custom Theme</string>
+    <key>settings</key>
+    <array>
+        <!-- Background color -->
+        <dict>
+            <key>settings</key>
+            <dict>
+                <key>background</key>
+                <string>#000000</string>
+                <key>foreground</key>
+                <string>#FFFFFF</string>
+            </dict>
+        </dict>
+
+        <!-- Datetime color -->
+        <dict>
+            <key>name</key>
+            <string>Constant - Datetime</string>
+            <key>scope</key>
+            <string>constant.other.datetime</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#FF0000</string> <!-- Adjust the color here -->
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Constant - Logger Level</string>
+            <key>scope</key>
+            <string>keyword.control.logger-level</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#FF0000</string> <!-- Adjust the color here -->
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Constant - Python Error</string>
+            <key>scope</key>
+            <string>keyword.control.python-error</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#FF0000</string> <!-- Adjust the color here -->
+                <key>underline</key>
+                <true/>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>

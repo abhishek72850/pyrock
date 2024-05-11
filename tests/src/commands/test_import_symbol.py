@@ -108,3 +108,32 @@ class TestImportSymbol(PyRockTestBase):
             )
         )
         self.assertEqual(expected_import_statement, "from cmath import sin, log10")
+
+    @patch("PyRock.src.commands.import_symbol.ImportSymbolCommand.load_user_python_imports")
+    def test_copy_import_symbol(
+        self,
+        mocked_load_user_python_imports,
+    ):
+        mocked_load_user_python_imports.return_value = {
+            "c": {
+                "h": [
+                    "cmath"
+                ]
+            }
+        }
+
+        insert_text = "cmath"
+        self.setText(insert_text)
+
+        self.view.sel().clear()
+        self.view.sel().add(sublime.Region(0, len(insert_text)))
+
+        selected_text = self.view.substr(self.view.sel()[0])
+        self.assertEqual(selected_text, "cmath")
+
+        self.view.run_command(
+            "py_rock", args={"action": "copy_import_symbol", "test": True}
+        )
+
+        expected_import_statement = sublime.get_clipboard()
+        self.assertEqual(expected_import_statement, "import cmath")

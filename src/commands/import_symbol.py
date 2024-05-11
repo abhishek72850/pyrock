@@ -123,6 +123,11 @@ class ImportSymbolCommand:
 
         logger.debug(f"Selected option {selected_option} and symbol {selected_symbol}")
 
+        if self.copy:
+            logger.debug(f"Copying import statement {import_option_list[index]}")
+            sublime.set_clipboard(import_option_list[index])
+            return
+
         # Match import statement region like
         # 1. from foo.bar import foo
         # 2. from foo.bar import (
@@ -206,7 +211,8 @@ class ImportSymbolCommand:
                         }
         return import_statements
 
-    def run(self):
+    def run(self, copy: bool = False):
+        self.copy = copy
         selected_view = self.view.sel()[0]
         selected_text: Optional[str] = self.view.substr(selected_view)
 
