@@ -95,6 +95,7 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
 
         with patch("PyRock.src.commands.output_panel.OutputPanel.show") as mocked_panel_show, \
         patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config, \
+        patch("sublime.Window.symbol_locations") as mocked_symbol_locations, \
         patch("subprocess.Popen") as mocked_process:
             mocked_get_test_config.return_value = {
                 "enabled": True,
@@ -109,8 +110,12 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
 
                 def wait(self):
                     pass
-
             mocked_process.return_value = TestProcess()
+
+            class TestSymbol:
+                path = test_file_view.file_name()
+                display_name = "tests/fixtures/test_fixture.py"
+            mocked_symbol_locations.return_value = [TestSymbol()]
 
             self.test_runner_cmd.run(test_file_view)
             self.test_runner_cmd._execute_test("0")

@@ -116,7 +116,12 @@ class TestCopyTestPathCommand(PyRockTestBase):
             }
 
             test_file_view.sel().clear()
-            test_file_view.sel().add(sublime.Region(272, 286))
+            test_file_view.sel().add(
+                sublime.Region(
+                    272 if sublime.platform() == PyRockConstants.PLATFORM_OSX else 271,
+                    286 if sublime.platform() == PyRockConstants.PLATFORM_OSX else 285
+                )
+            )
 
             selected_text = test_file_view.substr(test_file_view.sel()[0])
             self.assertEqual(selected_text, "test_iam_alone")
@@ -222,7 +227,12 @@ class TestCopyTestPathCommand(PyRockTestBase):
             }
 
             test_file_view.sel().clear()
-            test_file_view.sel().add(sublime.Region(272, 286))
+            test_file_view.sel().add(
+                sublime.Region(
+                    272 if sublime.platform() == PyRockConstants.PLATFORM_OSX else 271,
+                    286 if sublime.platform() == PyRockConstants.PLATFORM_OSX else 285
+                )
+            )
 
             selected_text = test_file_view.substr(test_file_view.sel()[0])
             self.assertEqual(selected_text, "test_iam_alone")
