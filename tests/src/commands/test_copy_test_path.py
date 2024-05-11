@@ -14,9 +14,7 @@ class TestCopyTestPathCommand(PyRockTestBase):
     def tearDown(self):
         pass
 
-    def test_copy_django_class_test_path(
-        self,
-    ):
+    def test_copy_django_class_test_path(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
             # Wait 4 second to make sure test fixture file has opened
@@ -25,23 +23,35 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        test_file_view.sel().clear()
-        test_file_view.sel().add(sublime.Region(53, 63))
+        with patch("sublime.load_settings") as mocked_load_settings, patch("os.path.exists") as mocked_os_path_exists:
 
-        selected_text = test_file_view.substr(test_file_view.sel()[0])
-        self.assertEqual(selected_text, "MyTestCase")
+            mocked_load_settings.return_value = {
+              "python_venv_path": "/Users/abhishek/venv/bin/activate",
+              "log_level": "debug",
+              "test_config": {
+                  "enabled": True,
+                  "test_framework": "pytest",
+                  "working_directory": "/Users/abhishek/",
+                  "test_runner_command": ["pytest"],
+              }
+            }
+            mocked_os_path_exists.return_value = True
 
-        test_file_view.run_command(
-            "py_rock", args={"action": "copy_test_path", "test": True})
+            test_file_view.sel().clear()
+            test_file_view.sel().add(sublime.Region(53, 63))
 
-        expected_import_statement = sublime.get_clipboard()
-        self.assertEqual(
-            expected_import_statement, "tests.fixtures.test_fixture.MyTestCase"
-        )
+            selected_text = test_file_view.substr(test_file_view.sel()[0])
+            self.assertEqual(selected_text, "MyTestCase")
 
-    def test_copy_django_class_method_test_path(
-        self,
-    ):
+            test_file_view.run_command(
+                "py_rock", args={"action": "copy_test_path", "test": True})
+
+            expected_import_statement = sublime.get_clipboard()
+            self.assertEqual(
+                expected_import_statement, "tests/fixtures/test_fixture.py::MyTestCase"
+            )
+
+    def test_copy_django_class_method_test_path(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
             # Wait 4 second to make sure test fixture file has opened
@@ -50,24 +60,31 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        test_file_view.sel().clear()
-        test_file_view.sel().add(sublime.Region(83, 105))
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
 
-        selected_text = test_file_view.substr(test_file_view.sel()[0])
-        self.assertEqual(selected_text, "test_long_running_task")
+            mocked_get_test_config.return_value = {
+                "enabled": True,
+                "test_framework": "pytest",
+                "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
+                "test_runner_command": ["pytest"]
+            }
 
-        test_file_view.run_command(
-            "py_rock", args={"action": "copy_test_path", "test": True})
+            test_file_view.sel().clear()
+            test_file_view.sel().add(sublime.Region(83, 105))
 
-        expected_import_statement = sublime.get_clipboard()
-        self.assertEqual(
-            expected_import_statement,
-            "tests.fixtures.test_fixture.MyTestCase.test_long_running_task"
-        )
+            selected_text = test_file_view.substr(test_file_view.sel()[0])
+            self.assertEqual(selected_text, "test_long_running_task")
 
-    def test_copy_django_individual_method_test_path(
-        self,
-    ):
+            test_file_view.run_command(
+                "py_rock", args={"action": "copy_test_path", "test": True})
+
+            expected_import_statement = sublime.get_clipboard()
+            self.assertEqual(
+                expected_import_statement,
+                "tests/fixtures/test_fixture.py::MyTestCase::test_long_running_task"
+            )
+
+    def test_copy_django_individual_method_test_path(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
             # Wait 4 second to make sure test fixture file has opened
@@ -76,25 +93,30 @@ class TestCopyTestPathCommand(PyRockTestBase):
             pass
         test_file_view = self.test_file_view
 
-        test_file_view.sel().clear()
-        test_file_view.sel().add(sublime.Region(272, 286))
+        with patch("PyRock.src.settings.SettingsTestConfigField._get_value") as mocked_get_test_config:
 
-        selected_text = test_file_view.substr(test_file_view.sel()[0])
-        self.assertEqual(selected_text, "test_iam_alone")
+            mocked_get_test_config.return_value = {
+                "enabled": True,
+                "test_framework": "pytest",
+                "working_directory": PyRockConstants.PACKAGE_TEST_FIXTURES_DIR,
+                "test_runner_command": ["pytest"]
+            }
 
-        test_file_view.run_command(
-            "py_rock", args={"action": "copy_test_path", "test": True})
+            test_file_view.sel().clear()
+            test_file_view.sel().add(sublime.Region(272, 286))
 
-        expected_import_statement = sublime.get_clipboard()
-        self.assertEqual(
-            expected_import_statement, "tests.fixtures.test_fixture.test_iam_alone"
-        )
+            selected_text = test_file_view.substr(test_file_view.sel()[0])
+            self.assertEqual(selected_text, "test_iam_alone")
 
-    # @patch("PyRock.src.settings.SettingsTestConfigField._get_value")
-    def test_copy_pytest_class_test_path(
-        self,
-        # mocked_get_test_config,
-    ):
+            test_file_view.run_command(
+                "py_rock", args={"action": "copy_test_path", "test": True})
+
+            expected_import_statement = sublime.get_clipboard()
+            self.assertEqual(
+                expected_import_statement, "tests/fixtures/test_fixture.py::test_iam_alone"
+            )
+
+    def test_copy_pytest_class_test_path(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
             # Wait 4 second to make sure test fixture file has opened
@@ -125,11 +147,7 @@ class TestCopyTestPathCommand(PyRockTestBase):
                 expected_import_statement, "tests/fixtures/test_fixture.py::MyTestCase"
             )
 
-    # @patch("PyRock.src.settings.SettingsTestConfigField._get_value")
-    def test_copy_pytest_class_method_test_path(
-        self,
-        # mocked_get_test_config,
-    ):
+    def test_copy_pytest_class_method_test_path(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
             # Wait 4 second to make sure test fixture file has opened
@@ -161,11 +179,7 @@ class TestCopyTestPathCommand(PyRockTestBase):
                 "tests/fixtures/test_fixture.py::MyTestCase::test_long_running_task"
             )
 
-    # @patch("PyRock.src.settings.SettingsTestConfigField._get_value")
-    def test_copy_pytest_individual_method_test_path(
-        self,
-        # mocked_get_test_config,
-    ):
+    def test_copy_pytest_individual_method_test_path(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
         try:
             # Wait 4 second to make sure test fixture file has opened
