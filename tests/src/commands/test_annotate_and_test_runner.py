@@ -81,9 +81,19 @@ class TestAnnotateAndTestRunnerCommand(PyRockTestBase):
             deactivate
         """
 
-            mocked_run_test_command.assert_called_once_with(
-                test_command
-            )
+            if sublime.platform == PyRockConstants.PLATFORM_WINDOWS:
+                mocked_run_test_command.assert_called_once_with(
+                    [
+                        '/Users/abhishek/venv/bin/activate',
+                        '&&', 'cd', '/Users/abhishek/', '&&',
+                        'pytest', 'tests/fixtures/test_fixture.py::MyTestCase',
+                        'deactivate'
+                    ]
+                )
+            else:
+                mocked_run_test_command.assert_called_once_with(
+                    test_command
+                )
 
     def test_run_test_command(self):
         sublime.set_timeout_async(self._open_test_fixture_file, 0)
