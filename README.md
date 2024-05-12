@@ -117,7 +117,7 @@ Usage
     - Then as you save it will show `Run as test` annotation on individual test class and methods, if you click on any of them it will run that particular test
     > If in between you want to run another test you can simply click on the `Run as test` but this will terminate any running test and starts the new one.
     <img width="691" alt="Screenshot 2024-05-12 at 4 05 26 PM" src="https://github.com/abhishek72850/pyrock/assets/18554923/4d424ca9-eef0-448b-9d07-f5bf43dd60d5">
-    <br>![Run test demo](https://github.com/abhishek72850/pyrock/assets/18554923/512c05a2-be75-4b6b-b17e-e6af4f1026bd)
+![Run test demo](https://github.com/abhishek72850/pyrock/assets/18554923/512c05a2-be75-4b6b-b17e-e6af4f1026bd)
 
 
 Key Bindings
