@@ -1,10 +1,10 @@
-import importlib
 import sublime
 import sublime_plugin
 from sublime import Edit
 from typing import Optional
 
 # Reloads the submodules
+# import importlib
 # from .src import reloader
 # importlib.reload(reloader)
 # reloader.reload()
@@ -15,15 +15,22 @@ from .src.commands.re_index_imports import ReIndexImportsCommand
 from .src.commands.admin import AdminManager
 from .src.logger import Logger
 from .src.constants import PyRockConstants
+from .src.commands.copy_test_path import CopyTestPathCommand
+from .src.commands.annotate_and_test_runner import AnnotateAndTestRunnerCommand
+
 
 logger = Logger(__name__)
 admin = AdminManager(window=sublime.active_window())
+test_runner_cmd = AnnotateAndTestRunnerCommand()
 
 
 def plugin_loaded():
     logger.debug(f"[{PyRockConstants.PACKAGE_NAME}]..........loaded")
     admin.initialize()
     admin.run()
+
+    settings = sublime.load_settings(PyRockConstants.PACKAGE_SETTING_NAME)
+    logger.debug(f"[{PyRockConstants.PACKAGE_NAME}] Settings: {settings}")
 
 def plugin_unloaded():
     logger.debug(f"[{PyRockConstants.PACKAGE_NAME}]..........unloaded")
@@ -44,9 +51,25 @@ class PyRockCommand(sublime_plugin.TextCommand):
                 test=test,
             )
             cmd.run()
-        if action == "re_index_imports":
+        elif action == "copy_import_symbol":
+            cmd = ImportSymbolCommand(
+                window=sublime.active_window(),
+                edit=edit,
+                view=self.view,
+                test=test,
+            )
+            cmd.run(copy=True)
+        elif action == "re_index_imports":
             cmd = ReIndexImportsCommand(test=test)
             cmd.run(sublime.active_window())
+        elif action == "copy_test_path":
+            cmd = CopyTestPathCommand(
+                view=self.view,
+                test=test,
+            )
+            cmd.run()
+        else:
+            logger.debug("Inavlid command recieved")
 
     def is_enabled(self, action: str, test: bool = False):
         """
@@ -92,3 +115,17 @@ class PyRockReplaceTextCommand(sublime_plugin.TextCommand):
         """
         region = sublime.Region(start, end)
         self.view.replace(edit, region, text)
+
+
+class PyRockAnnotateAndTestRunnerCommand(sublime_plugin.ViewEventListener):
+    def on_load_async(self):
+        logger.debug("View loaded")
+        test_runner_cmd.run(self.view)
+
+    def on_activated_async(self):
+        logger.debug("View reloaded")
+        test_runner_cmd.run(self.view)
+
+    def on_post_save_async(self):
+        logger.debug("View saved")
+        test_runner_cmd.run(self.view)

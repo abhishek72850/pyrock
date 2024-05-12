@@ -79,3 +79,21 @@ class InvalidAPIStatus(PyRockBaseException):
         error_code: str = "PR0008",
     ):
         super().__init__(error_code, message)
+
+
+class InvalidTestConfig(PyRockBaseException):
+    def __init__(
+        self,
+        message: str = "Provided test config is invalid",
+        error_code: str = "PR0009",
+    ):
+        super().__init__(error_code, message)
+
+
+class InvalidTestFramework(PyRockBaseException):
+    def __init__(
+        self,
+        message: str = "Given test framework is invalid",
+        error_code: str = "PR0010",
+    ):
+        super().__init__(error_code, message)

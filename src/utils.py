@@ -1,3 +1,5 @@
+import os
+import re
 import urllib.request
 import json
 import traceback
@@ -74,3 +76,12 @@ class Network:
 
         response = Network._make_request(url, data=data, **kwargs)
         return Network._parse_response(response)
+
+
+def is_test_file(file_name: str):
+    test_file_name_regex = r'^test_[a-zA-Z_0-9]\w*\.py'
+    file_name = os.path.basename(file_name)
+
+    if re.match(test_file_name_regex, file_name) is None:
+        return False
+    return True
