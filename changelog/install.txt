@@ -1,0 +1,123 @@
+PyRock
+================
+Sublime plugin to generate import statement for python
+
+
+Features
+--------
+- Generate's Import statement
+- Copy Import statement
+- Generate and copy `django` or `pytest` supported test path
+- Run `django` or `pytest` tests
+- Supports virtual enviroment
+
+Upcoming Features
+-----------------
+- Autocomplete
+- Project level plugin settings
+
+Installation
+------------
+- From sublime package control install package enter name `PyRock`
+- OR
+- Clone this git repo and put it in your sublime packages folder
+
+Settings
+--------
+{
+    "paths_to_scan": [], // Not used as of now
+    "python_venv_path": "",
+    "python_interpreter_path": "", // Not used as of now
+    "log_level": "info",
+    "import_scan_depth": 4,
+    "test_config": {
+        "enabled": false, // Enable or disable run test feature, default false
+        "test_framework": "", // django or pytest
+        "working_directory": "", // Working directory of your project
+        "test_runner_command": [], // Command to execute when clicking `Run as test`
+    }
+}
+
+- `paths_to_scan`: This is still in development, it will have no effect as of now.
+- `python_interpreter_path`: This is still in development, it will have no effect as of now.
+- `python_venv_path` : Specifies which python env to use when indexing files, if not given it will choose the default python interpreter of your system (Make sure you have set any default python, otherwise it will not be able to index). It takes the full path to `activate` file of the virtual environment, for example:
+  ```
+  "python_venv_path": "/Users/abhishek/venv/bin/activate"
+  ```
+- `log_level`: By default set to `info`, accepted values `info`, `debug`, `error`, `warning`
+- `import_scan_depth`: This defines how deep it will scan any python package, the higher the number the more deep it will go, `4` is an optimal depth, you can increase it but it will also increase the time to index all files, so change it carefully.
+
+- `test_config.enabled`
+    - **Description**: Enable or disable run test feature
+    - **Type**: `str`
+    - **Allowed Values**: `true` or `false`
+    - **Default**: `false`
+    > ⚠️ If its `false` then it will ignore all other settings in `test_config`
+
+- `test_config.test_framework`
+    - **Description**: Defines what library is used for running the test
+    - **Type**: `str`
+    - **Allowed Values**: `django` or `pytest`
+    - **Default**: NA
+    > ⚠️ This assumes that `django` or `pytest` is pre-installed in your python env
+
+- `test_config.working_directory`
+    - **Description**: Working directory of your project, this will be used to define what is the root of project
+    - **Type**: `str`
+    - **Allowed Values**: Valid Path
+    - **Default**: NA
+    - **Example**:
+        ```
+        "working_directory": "/Users/abhishek/django-app/"
+        ```
+
+- `test_config.test_runner_command`
+    - **Description**: Command to execute when clicking `Run as test`
+    - **Type**: `List[str]`
+    - **Allowed Values**: NA
+    - **Default**: NA
+    - **Example**
+        ```json
+        // For Django
+        "test_runner_command": ["python", "manage.py", "test", "--keepdb"]
+
+        // For Pytest
+        "test_runner_command": ["pytest"] 
+        ```
+
+Usage
+-----
+- Upon installation it automatically reads the settings and scans your python environment for packages and index them.
+  You will see progress of indexing in status bar, like this:
+
+- For some reason if indexing didn't happened or you want to re-index after you have removed/installed packages in your python environment, you can do so by calling `Re-Index Imports` from command pallate or just right-click to open menu and under `PyRock` you will see `Re-Index Imports`
+
+- To generate python import, select the text (min 2 characters) then right click and under `PyRock` click `Import Symbol`, it will show you the suggestion out which you select any and it will add that import statement into your python script.
+
+- To Run Tests:
+    - Write your tests and save it as `test_*.py`, the file name has to be prefixed with `test_`
+    - Then as you save it will show `Run as test` annotation on individual test class and methods, if you click on any of them it will run that particular test
+    > If in between you want to run another test you can simply click on the `Run as test` but this will terminate any running test and starts the new one.
+
+Key Bindings
+------------
+- By default key bindings for this plugin are disabled, to enable it you simply goto `Preferences` -> `Package Settings` -> `PyRock` -> `Key Bindings` and then copy paste from left view to your right view and uncomment it or you can copy the below directly to your right view and save it:
+[
+  // Both of the key binding generate import statement suggestions for the selected text
+  {
+    "keys": ["super+shift+;"],
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  },
+  {
+    "keys": ["ctrl+shift+;"],
+    "command": "py_rock",
+    "args": { "action": "import_symbol" }
+  }
+]
+
+Compatibility
+-------------
+- Require Sublime Text version >= 4
+- Works for `Python Imports` only
+- Best experience with linter support [Optional]
