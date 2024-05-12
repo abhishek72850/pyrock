@@ -19,14 +19,15 @@ Sublime plugin to generate import statement for python
 Features
 --------
 - Generate's Import statement
+- Copy Import statement
+- Generate and copy `django` or `pytest` supported test path
+- Run `django` or `pytest` tests
 - Supports virtual enviroment
 
 Upcoming Features
 -----------------
-- AI autocomplete
-- Copy python import statement (module, class, method)
-- Copy python path (module)
-- Copy unittest path (module, class, method)
+- Autocomplete
+- Project level plugin settings
 
 Installation
 ------------
@@ -36,23 +37,67 @@ Installation
 
 Settings
 --------
-```
+```json
 {
     "paths_to_scan": [], // Not used as of now
     "python_venv_path": "",
     "python_interpreter_path": "", // Not used as of now
     "log_level": "info",
-    "import_scan_depth": 4
+    "import_scan_depth": 4,
+    "test_config": {
+        "enabled": false, // Enable or disable run test feature, default false
+        "test_framework": "", // django or pytest
+        "working_directory": "", // Working directory of your project
+        "test_runner_command": [], // Command to execute when clicking `Run as test`
+    }
 }
 ```
 - `paths_to_scan`: This is still in development, it will have no effect as of now.
 - `python_interpreter_path`: This is still in development, it will have no effect as of now.
 - `python_venv_path` : Specifies which python env to use when indexing files, if not given it will choose the default python interpreter of your system (Make sure you have set any default python, otherwise it will not be able to index). It takes the full path to `activate` file of the virtual environment, for example:
   ```
-  "python_venv_path": "~/home/venv/bin/activate"
+  "python_venv_path": "/Users/abhishek/venv/bin/activate"
   ```
 - `log_level`: By default set to `info`, accepted values `info`, `debug`, `error`, `warning`
 - `import_scan_depth`: This defines how deep it will scan any python package, the higher the number the more deep it will go, `4` is an optimal depth, you can increase it but it will also increase the time to index all files, so change it carefully.
+
+- `test_config.enabled`
+    - **Description**: Enable or disable run test feature
+    - **Type**: `str`
+    - **Allowed Values**: `true` or `false`
+    - **Default**: `false`
+    > ⚠️ If its `false` then it will ignore all other settings in `test_config`
+
+- `test_config.test_framework`
+    - **Description**: Defines what library is used for running the test
+    - **Type**: `str`
+    - **Allowed Values**: `django` or `pytest`
+    - **Default**: NA
+    > ⚠️ This assumes that `django` or `pytest` is pre-installed in your python env
+
+- `test_config.working_directory`
+    - **Description**: Working directory of your project, this will be used to define what is the root of project
+    - **Type**: `str`
+    - **Allowed Values**: Valid Path
+    - **Default**: NA
+    - **Example**:
+        ```
+        "working_directory": "/Users/abhishek/django-app/"
+        ```
+
+- `test_config.test_runner_command`
+    - **Description**: Command to execute when clicking `Run as test`
+    - **Type**: `List[str]`
+    - **Allowed Values**: NA
+    - **Default**: NA
+    - **Example**
+        ```json
+        // For Django
+        "test_runner_command": ["python", "manage.py", "test", "--keepdb"]
+
+        // For Pytest
+        "test_runner_command": ["pytest"] 
+        ```
 
 Usage
 -----
@@ -66,6 +111,14 @@ Usage
 - To generate python import, select the text (min 2 characters) then right click and under `PyRock` click `Import Symbol`, it will show you the suggestion out which you select any and it will add that import statement into your python script.
   <img width="589" alt="Import symbol" src="https://github.com/abhishek72850/pyrock/assets/18554923/eb1421ff-4304-40f5-aca8-eaea84c96145">
   <img width="584" alt="import suggestions" src="https://github.com/abhishek72850/pyrock/assets/18554923/a64fadef-9554-4840-929b-72a93f27c799">
+
+- To Run Tests:
+    - Write your tests and save it as `test_*.py`, the file name has to be prefixed with `test_`
+    - Then as you save it will show `Run as test` annotation on individual test class and methods, if you click on any of them it will run that particular test
+    > If in between you want to run another test you can simply click on the `Run as test` but this will terminate any running test and starts the new one.
+    <img width="691" alt="Screenshot 2024-05-12 at 4 05 26 PM" src="https://github.com/abhishek72850/pyrock/assets/18554923/4d424ca9-eef0-448b-9d07-f5bf43dd60d5">
+    <br>![Run test demo](https://github.com/abhishek72850/pyrock/assets/18554923/512c05a2-be75-4b6b-b17e-e6af4f1026bd)
+
 
 Key Bindings
 ------------
