@@ -1,1 +1,0 @@
-{"sublime_text": ">=3000", "description": "Sublime plugin to generate python import statements", "platforms": ["*"], "version": "1.1.0", "url": "https://github.com/abhishek72850/pyrock", "dependencies": []}
